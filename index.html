@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<style>
+    body{
+        background-image: url(./movie-clapper-red-background-with-copy-space_23-2148416747.jpg);
+        background-size: cover;
+        
+    }
+    .card img{
+        height: 300px;
+        }
+        .card h3{
+            text-align: center;
+        }
+        .card{
+            width: 500px;
+        }
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-4 col-xs-4"></div>
+            <div class="col-4 col-xs-4">
+                <input  class="mt-2 bg-light p-2 fs-5" type="text" name="" id="mov_id" placeholder="Enter movie Id number">
+                <button class=" btn btn-warning p-3"  onclick="fetchData()">FetchData</button>
+            </div>
+            <div class="col-4 col-xs-4"></div>
+        </div>
+        <div class="row">
+            <div class="col-4 col-xs-4"></div>
+            <div class="col-4 col-xs-4" id="result"></div>
+            <div class="col-4 col-xs-4"></div>
+        </div>
+    </div>
+</body>
+<script>
+    function fetchData(){
+        let movie_id=mov_id.value
+        fetch(`https://api.themoviedb.org/3/movie/${movie_id}?api_key=582b8a05b61118a5ead85fa4dbe86064&language=en-US`).then(
+            res=>res.json()).then(data=>displayValue(data))
+    }
+        function displayValue(data){
+            // console.log(data.production_countries[0].name);
+            
+            let movie_name=data.original_title
+            let movie_image=data.poster_path
+            let movie_release=data.release_date
+            let movie_budget=data.budget
+                let movie_genres=data.genres[0].name
+                let movie_language=data.original_language
+                let movie_overview=data.overview
+                let movie_company=data.production_companies[0].name
+                let movie_country=data.production_countries[0].name
+                let movie_vote=data.vote_average
+
+            let html_data=`
+            <div class="card" style="width: 25rem;">
+  <img src="https://image.tmdb.org/t/p/w500${movie_image}" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h3 class="card-title">${movie_name}</h3>
+    <p class="card-text">${movie_overview}</p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">Movie Release Date: ${movie_release}</li>
+    <li class="list-group-item">Movie Budget: ${movie_budget}</li>
+    <li class="list-group-item">Movie Genre: ${movie_genres}</li>
+    <li class="list-group-item">Movie Language: ${movie_language}</li>
+    <li class="list-group-item">Movie Production Company: ${movie_company}</li>
+    <li class="list-group-item">Movie Production Country: ${movie_country}</li>
+    <li class="list-group-item">Movie Vote Average: ${movie_vote}</li>
+
+  </ul>
+</div>`
+document.querySelector("#result").innerHTML=html_data
+        }
+        </script> 
+</html>
